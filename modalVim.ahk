@@ -29,7 +29,7 @@
 SendMode, Input
 SetKeyDelay, -1
 ;#NoTrayIcon
-;Menu, Tray, Icon, %A_ScriptDir%\vim.ico
+Menu, Tray, Icon, %A_ScriptDir%\vim.ico
 CoordMode, Tooltip, Screen
 
 
@@ -56,6 +56,12 @@ CAPSLOCK Up::Send {LControl Up}
 
 ^CAPSLOCK::CAPSLOCK
 
+vimModeOn := false
+
++Esc::
+	vimModeOn := !vimModeOn
+return
+
 vim:
 While GetKeyState("CAPSLOCK", "P") and not WinActive("ahk_class Vim")
 {
@@ -78,11 +84,13 @@ Return
 vimize()
 {
   Gui 11:Show, Minimize, vimOn ; Hide,
+  vimModeOn := true
 }
 
 unvimize()
 {
   Gui 11:Destroy
+  vimModeOn := false
 }
 
 #IFWinExist vimOn
