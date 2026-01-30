@@ -57,12 +57,15 @@ IsXplorer2Tree() {
 }
 
 ; Reset vim mode after timeout
+global last_mode_key := ""
 ModeReset:
-    if (A_ThisHotkey == "f") {
+    ; Use stored mode key for conditional timeout
+    if (last_mode_key == "f") {
         sleep, 3000
     }
     Tooltip
     vim_mode := ""
+    last_mode_key := ""
 return
 
 ; ============================================================================
@@ -98,7 +101,10 @@ return
     ; gr - Root
     r::Send +{Backspace}
     ; gh - Home
-    h::SendInput +{Tab}`%homepath`%{Enter}
+    h::
+        EnvGet, homePath, USERPROFILE
+        SendInput, +{Tab}%homePath%{Enter}
+    return
     ; gk - Quick access
     k::^k
 #If
@@ -155,7 +161,9 @@ o::
 g::
 z::
 f::
+    global last_mode_key
     vim_mode := A_ThisHotkey
+    last_mode_key := A_ThisHotkey
     Tooltip, % vim_mode, 1, 1
     SetTimer ModeReset, -500
 return

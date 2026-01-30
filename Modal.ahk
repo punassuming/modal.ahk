@@ -137,7 +137,8 @@ b::Modal_NavWordLeft()
 
 ; Line navigation
 0::
-    if (Modal_HasPendingKey() || Modal_GetRepeatCount() > 1) {
+    global Modal_RepeatCount
+    if (Modal_HasPendingKey() || Modal_RepeatCount != "") {
         Modal_AddRepeatDigit("0")
     } else {
         Modal_NavLineStart()
@@ -145,7 +146,7 @@ b::Modal_NavWordLeft()
 return
 
 $::Modal_NavLineEnd()
-^::Modal_NavFirstNonBlank()
+^::Modal_NavLineStart()  ; Same as 0, first column
 
 ; Page navigation
 ^u::Modal_NavHalfPageUp()
@@ -379,7 +380,9 @@ g::
     } else if (char = "d") {
         SendInput, ^{Backspace}  ; Desktop
     } else if (char = "h") {
-        SendInput, +{Tab}`%homepath`%{Enter}  ; Home
+        ; Go to home directory using environment variable
+        EnvGet, homePath, USERPROFILE
+        SendInput, +{Tab}%homePath%{Enter}  ; Home
     }
 return
 

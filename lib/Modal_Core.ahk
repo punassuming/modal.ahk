@@ -444,7 +444,9 @@ Modal_Notify(message, duration := "") {
     }
     
     ; Use Progress bar as notification (AHK v1 compatible)
-    Progress, y989 b2 fs10 zh0 W150 WS700, %message%, , , Verdana
+    ; Position at bottom of screen, centered
+    yPos := A_ScreenHeight - 91
+    Progress, y%yPos% b2 fs10 zh0 W150 WS700, %message%, , , Verdana
     
     if (duration > 0) {
         SetTimer, Modal_HideNotification, -%duration%

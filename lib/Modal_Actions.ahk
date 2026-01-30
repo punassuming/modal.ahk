@@ -334,9 +334,13 @@ Modal_Format() {
     Modal_ClearRepeatCount()
 }
 
-Modal_Repeat() {
-    ; Repeat last action (this is complex in AHK, simplified version)
-    SendInput, ^y
+; Note: True vim-style repeat (dot command) is complex to implement.
+; This function is a placeholder for future implementation.
+; For now, users should use application-specific repeat commands.
+Modal_RepeatLastCommand() {
+    ; Reserved for future implementation of vim-style dot command
+    ; Currently does nothing as proper implementation requires
+    ; tracking the last action performed
     Modal_ClearRepeatCount()
 }
 

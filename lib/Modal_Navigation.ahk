@@ -112,13 +112,6 @@ Modal_NavLineEnd() {
     Modal_ClearRepeatCount()
 }
 
-Modal_NavFirstNonBlank() {
-    ; Go to first non-blank character of line
-    SendInput, {Home}
-    ; Note: AHK doesn't have a direct way to find first non-blank
-    Modal_ClearRepeatCount()
-}
-
 ; ============================================================================
 ; PAGE NAVIGATION
 ; ============================================================================
@@ -199,11 +192,14 @@ Modal_NavDocEnd() {
 
 Modal_NavGotoLine() {
     ; Go to line number (from repeat count)
+    ; Note: Uses Ctrl+G which works in most editors (Notepad++, VS Code, etc.)
     count := Modal_GetRepeatCount()
     
-    ; Most apps use Ctrl+G for goto line
+    ; Send Ctrl+G to open goto dialog
     SendInput, ^g
-    Sleep, 100
+    ; Wait for dialog to appear (adjust if needed for slower systems)
+    Sleep, 200
+    ; Type the line number and press Enter
     SendInput, %count%{Enter}
     
     Modal_ClearRepeatCount()
