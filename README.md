@@ -148,7 +148,7 @@ modal.ahk/
 ├── icons/
 │   ├── normal.ico         # Normal mode icon
 │   └── insert.ico         # Insert mode icon
-├── applications/          # Legacy app-specific scripts
+├── applications/          # Legacy app-specific scripts (reference only)
 ├── Vimdow/               # Original vimdows navigation
 ├── vim-nav/              # Original vim navigation
 └── README.md

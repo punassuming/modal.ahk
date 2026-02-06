@@ -346,24 +346,57 @@ l::SendInput, {Enter}
 +h::SendInput, !{Left}
 +l::SendInput, !{Right}
 
-; Tabs
-^n::SendInput, ^{Insert}
-^w::SendInput, ^{F4}
+; Go to end
++g::SendInput, {End}
 
 ; Quick search
 /::SendInput, ^!+f
 
+; Preview file
+i::SendInput, ^q
+
+; Edit file
++e::SendInput, {F4}
+
 ; Bookmarks
 '::SendInput, !bm
 m::SendInput, !ba
+
+; Command console
++s::SendInput, {F10}
+
+; User menu
+:::SendInput, !uum
+
+; Selection
++v::SendInput, !s
+v::SendInput, {NumpadMult}
+
+; Ordering (o prefix)
+o::
+    Input, char, L1 T1
+    if (char = "s") {
+        SendInput, ^!s  ; Order by size
+    } else if (char = "t") {
+        SendInput, ^!t  ; Order by time
+    } else if (char = "n") {
+        SendInput, ^!n  ; Order by name
+    } else if (char = "d") {
+        SendInput, ^!d  ; Order by date
+    }
+return
 
 ; View options (z prefix)
 z::
     Input, char, L1 T1
     if (char = "h") {
         SendInput, ^!+h  ; Toggle hidden files
+    } else if (char = "u") {
+        SendInput, ^d    ; Show directory size
     } else if (char = "f") {
         SendInput, ^h    ; Filter
+    } else if (char = "r") {
+        SendInput, !{F2} ; Recents
     } else if (char = "z") {
         SendInput, ^j    ; Toggle filter
     }
@@ -374,15 +407,27 @@ g::
     Input, char, L1 T1
     if (char = "g") {
         SendInput, {Home}  ; Go to top
+    } else if (char = "t") {
+        SendInput, ^!{Right}  ; Next tab
+    } else if (char = "T") {
+        SendInput, ^!{Left}   ; Previous tab
+    } else if (char = "c") {
+        SendInput, ^{F4}      ; Close tab
+    } else if (char = "n") {
+        SendInput, ^{Insert}  ; New tab
     } else if (char = "f") {
         ; Focus tree view
         ControlFocus, ATL:FolderTreeView1, A
     } else if (char = "d") {
         SendInput, ^{Backspace}  ; Desktop
+    } else if (char = "r") {
+        SendInput, +{Backspace}  ; Root
     } else if (char = "h") {
         ; Go to home directory using environment variable
         EnvGet, homePath, USERPROFILE
         SendInput, +{Tab}%homePath%{Enter}  ; Home
+    } else if (char = "k") {
+        SendInput, ^k  ; Quick access/docs
     }
 return
 
