@@ -1,0 +1,22 @@
+# AutoHotkey compiled executables
+*.exe
+
+# Backup files
+*.bak
+*~
+
+# Log files
+*.log
+
+# Editor files
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
