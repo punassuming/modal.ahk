@@ -498,5 +498,119 @@ u::SendInput, ^z
 #If
 
 ; ============================================================================
+; MICROSOFT OUTLOOK
+; Supports Outlook 2023 (Classic Desktop) and New Outlook (2024+, olk.exe)
+; Key bindings follow Gmail keyboard shortcut conventions
+; ============================================================================
+
+; Detects New Outlook (web-based, olk.exe process)
+Modal_IsNewOutlookActive() {
+    WinGet, exe, ProcessName, A
+    return (exe = "olk.exe")
+}
+
+; Gmail-style key bindings for Outlook 2023 (Classic)
+#If Modal_IsNormalMode() && Modal_IsAppActive("OutlookClassic")
+
+; Navigation (j/k = next/previous email, like Gmail)
+j::SendInput, {Down}
+k::SendInput, {Up}
+h::SendInput, {Escape}     ; Back / close reading pane
+l::SendInput, {Enter}      ; Open email (like Gmail's o)
+o::SendInput, {Enter}      ; Open email
+
+; Compose new email (c in Gmail)
+c::SendInput, ^n
+
+; Reply / Reply All / Forward (r, a, f in Gmail)
+r::SendInput, ^r
+a::SendInput, ^+r
+f::SendInput, ^f
+
+; Archive (e in Gmail)
+e::SendInput, {Backspace}
+
+; Delete (x in Gmail)
+x::SendInput, {Delete}
+
+; Mark as unread (u in Gmail)
+u::SendInput, ^u
+
+; Flag / Star (s in Gmail)
+s::SendInput, {Insert}
+
+; Search (/ in Gmail)
+/::SendInput, ^e
+
+; Navigate within thread / conversation (n/p in Gmail)
+n::SendInput, {Down}
+p::SendInput, {Up}
+
+; Go to top / bottom of list (gg / G in vim, g+g / G in Gmail)
+g::
+    Input, char, L1 T1
+    if (char = "i") {
+        SendInput, ^+i    ; Go to Inbox
+    } else if (char = "g") {
+        SendInput, ^{Home}  ; Go to top of list
+    }
+return
+
++g::SendInput, ^{End}      ; Go to bottom of list
+
+#If
+
+; Gmail-style key bindings for New Outlook (2024+)
+#If Modal_IsNormalMode() && Modal_IsNewOutlookActive()
+
+; Navigation (j/k = next/previous email, like Gmail)
+j::SendInput, {Down}
+k::SendInput, {Up}
+h::SendInput, {Escape}     ; Back / close reading pane
+l::SendInput, {Enter}      ; Open email (like Gmail's o)
+o::SendInput, {Enter}      ; Open email
+
+; Compose new email (c in Gmail)
+c::SendInput, ^n
+
+; Reply / Reply All / Forward (r, a, f in Gmail)
+r::SendInput, ^r
+a::SendInput, ^+r
+f::SendInput, ^f
+
+; Archive (e in Gmail)
+e::SendInput, {Backspace}
+
+; Delete (x in Gmail)
+x::SendInput, {Delete}
+
+; Mark as unread (u in Gmail)
+u::SendInput, ^u
+
+; Flag / Star (s in Gmail)
+s::SendInput, {Insert}
+
+; Search (/ in Gmail)
+/::SendInput, ^e
+
+; Navigate within thread / conversation (n/p in Gmail)
+n::SendInput, {Down}
+p::SendInput, {Up}
+
+; Go to top / bottom of list (gg / G in vim, g+g / G in Gmail)
+g::
+    Input, char, L1 T1
+    if (char = "i") {
+        SendInput, ^+i    ; Go to Inbox
+    } else if (char = "g") {
+        SendInput, ^{Home}  ; Go to top of list
+    }
+return
+
++g::SendInput, ^{End}      ; Go to bottom of list
+
+#If
+
+; ============================================================================
 ; END OF SCRIPT
 ; ============================================================================
