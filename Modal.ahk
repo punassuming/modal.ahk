@@ -337,6 +337,10 @@ h::SendInput, {Backspace}
 j::SendInput, {Down}
 k::SendInput, {Up}
 l::SendInput, {Enter}
+!h::SendInput, {Backspace}
+!j::SendInput, {Down}
+!k::SendInput, {Up}
+!l::SendInput, {Enter}
 
 ; Page navigation
 +j::SendInput, {PgDn}
@@ -351,12 +355,14 @@ l::SendInput, {Enter}
 
 ; Quick search
 /::SendInput, ^!+f
+^f::SendInput, ^f
 
 ; Preview file
 i::SendInput, ^q
 
 ; Edit file
 +e::SendInput, {F4}
+!f::SendInput, !h
 
 ; Bookmarks
 '::SendInput, !bm
@@ -364,6 +370,8 @@ m::SendInput, !ba
 
 ; Command console
 +s::SendInput, {F10}
+!t::SendInput, ^{Insert}
+^k::SendInput, ^k
 
 ; User menu
 :::SendInput, !uum
@@ -371,6 +379,8 @@ m::SendInput, !ba
 ; Selection
 +v::SendInput, !s
 v::SendInput, {NumpadMult}
++Space::SendInput, !a
+`::SendInput, !b
 
 ; Ordering (o prefix)
 o::
@@ -486,8 +496,32 @@ i::
 return
 
 d::SendInput, {Delete}
++d::SendInput, +{Space}{AppsKey}d
+
+c::
+    SendInput, {Delete}{F2}
+    Modal_EnterInsertMode()
+return
 
 u::SendInput, ^z
+
+#If
+
+; ============================================================================
+; WORD
+; ============================================================================
+
+#If Modal_IsNormalMode() && Modal_IsAppActive("Word")
+
+LWin::SendInput, {Ctrl Down}
+LWin Up::SendInput, {Ctrl Up}
+
+^a::SendInput, {Home}
+^e::SendInput, {End}
+^k::SendInput, +{End}{Del}
+!-::SendInput, ^z
+!=::SendInput, ^y
+^w::SendInput, ^{Backspace}
 
 #If
 
