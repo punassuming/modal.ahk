@@ -433,6 +433,12 @@ return
 
 #If
 
+; Xplorer2 tree view specific navigation
+#If Modal_IsNormalMode() && Modal_IsAppActive("Xplorer2") && InStr(Modal_GetCurrentControl(), "ATL:FolderTreeView")
+h::SendInput, {Left}
+l::SendInput, {Right}
+#If
+
 ; ============================================================================
 ; WINDOWS EXPLORER
 ; ============================================================================
