@@ -445,27 +445,60 @@ l::SendInput, {Right}
 
 #If Modal_IsNormalMode() && Modal_IsAppActive("Explorer")
 
-h::SendInput, {Backspace}
+; Navigation
+h::SendInput, {Backspace}   ; Go to parent folder
 j::SendInput, {Down}
 k::SendInput, {Up}
-l::SendInput, {Enter}
+l::SendInput, {Enter}       ; Open file/folder
 
+; Page navigation
 +j::SendInput, {PgDn}
 +k::SendInput, {PgUp}
 
-+h::SendInput, !{Left}
-+l::SendInput, !{Right}
+; History navigation
++h::SendInput, !{Left}      ; Back in history
++l::SendInput, !{Right}     ; Forward in history
 
-/::SendInput, ^f
+; File operations
+r::SendInput, {F2}          ; Rename
+d::SendInput, {Delete}      ; Delete to Recycle Bin
++d::SendInput, +{Delete}    ; Permanently delete
+y::SendInput, ^c            ; Copy file
+p::SendInput, ^v            ; Paste file
+m::SendInput, ^x            ; Cut/Move file
+e::SendInput, !{Enter}      ; File properties
 
+; Address bar / search
+o::SendInput, ^l            ; Focus address bar
+/::SendInput, ^f            ; Search/filter
+
+; New folder
+n::SendInput, ^+n
+
+; Refresh
+^r::SendInput, {F5}
+
+; Goto commands (g prefix)
 g::
     Input, char, L1 T1
     if (char = "g") {
-        SendInput, {Home}
+        SendInput, {Home}        ; Go to top of list
+    } else if (char = "h") {
+        SendInput, !{Home}       ; Go to user home folder
+    } else if (char = "u") {
+        SendInput, !{Up}         ; Go up one level (parent folder)
+    } else if (char = "d") {
+        SendInput, ^l
+        Sleep, 150  ; Wait for address bar to gain focus before typing
+        SendInput, shell:Desktop{Enter}  ; Go to Desktop
+    } else if (char = "t") {
+        SendInput, ^{Tab}        ; Next tab (Windows 11 Explorer)
+    } else if (char = "T") {
+        SendInput, ^+{Tab}       ; Previous tab (Windows 11 Explorer)
     }
 return
 
-+g::SendInput, {End}
++g::SendInput, {End}        ; Go to bottom of list
 
 #If
 
@@ -608,6 +641,118 @@ g::
 return
 
 +g::SendInput, ^{End}      ; Go to bottom of list
+
+#If
+
+; ============================================================================
+; BROWSERS (Chrome, Edge, Firefox) - Vimium-style bindings
+; ============================================================================
+
+; Detect Google Chrome by process name
+Modal_IsChromeActive() {
+    WinGet, exe, ProcessName, A
+    WinGetClass, cls, A
+    return (exe = "chrome.exe" && cls = "Chrome_WidgetWin_1")
+}
+
+; Detect Microsoft Edge by process name
+Modal_IsEdgeActive() {
+    WinGet, exe, ProcessName, A
+    WinGetClass, cls, A
+    return (exe = "msedge.exe" && cls = "Chrome_WidgetWin_1")
+}
+
+; Detect Mozilla Firefox by window class
+Modal_IsFirefoxActive() {
+    WinGetClass, cls, A
+    return (cls = "MozillaWindowClass")
+}
+
+; Detect any supported browser (Chrome, Edge, or Firefox)
+Modal_IsBrowserActive() {
+    return Modal_IsChromeActive() || Modal_IsEdgeActive() || Modal_IsFirefoxActive()
+}
+
+#If Modal_IsNormalMode() && Modal_IsBrowserActive()
+
+; Scrolling (vim-style)
+j::SendInput, {Down}
+k::SendInput, {Up}
+h::SendInput, {Left}
+l::SendInput, {Right}
+
+; Page scrolling
+d::SendInput, {Space}       ; Page down (full page)
+u::SendInput, +{Space}      ; Page up (full page)
+^d::SendInput, {PgDn}       ; Half-page down (Ctrl+d)
+^u::SendInput, {PgUp}       ; Half-page up (Ctrl+u)
+
+; Top / bottom of page (gg / G)
+g::
+    Input, char, L1 T1
+    if (char = "g") {
+        SendInput, ^{Home}       ; gg - scroll to top of page
+    } else if (char = "t") {
+        SendInput, ^{Tab}        ; gt - next tab
+    } else if (char = "T") {
+        SendInput, ^+{Tab}       ; gT - previous tab
+    } else if (char = "0") {
+        SendInput, ^1            ; g0 - first tab
+    } else if (char = "i") {
+        SendInput, {Tab}         ; gi - focus first input field (approximate)
+    }
+return
+
++g::SendInput, ^{End}       ; G - scroll to bottom of page
+
+; History navigation (Vimium H/L)
++h::SendInput, !{Left}      ; H - go back in history
++l::SendInput, !{Right}     ; L - go forward in history
+
+; Tab management
+t::SendInput, ^t            ; Open new tab
+x::SendInput, ^w            ; Close current tab
++x::SendInput, ^+t          ; Restore last closed tab
++j::SendInput, ^{Tab}       ; Next tab
++k::SendInput, ^+{Tab}      ; Previous tab
+
+; Page reload
+r::SendInput, {F5}          ; Reload page
++r::SendInput, ^+r          ; Hard reload (bypass cache)
+
+; Find in page
+/::SendInput, ^f            ; Open find bar
+n::SendInput, {F3}          ; Find next
++n::SendInput, +{F3}        ; Find previous
+
+; Address bar / URL navigation
+o::SendInput, ^l            ; Focus address bar (open URL in current tab)
++o::SendInput, ^t           ; Open new tab (address bar auto-focused)
+
+; Yank (copy) current page URL
+y::
+    pending := Modal_GetPendingKey()
+    if (pending = "y") {
+        SendInput, ^l
+        Sleep, 100  ; Wait for address bar focus before selecting text
+        SendInput, ^a
+        Sleep, 50   ; Wait for selection to complete before copying
+        SendInput, ^c
+        Sleep, 50   ; Wait for clipboard to be populated before dismissing
+        SendInput, {Escape}
+        Modal_ClearRepeatCount()
+    } else {
+        Modal_SetPendingKey("y")
+    }
+return
+
+; View page source
++u::SendInput, ^u
+
+; Zoom
++i::SendInput, ^=           ; Zoom in  (Ctrl+=)
++m::SendInput, ^-           ; Zoom out (Ctrl+-)
++0::SendInput, ^0           ; Reset zoom (Ctrl+0)
 
 #If
 

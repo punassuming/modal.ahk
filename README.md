@@ -129,11 +129,14 @@ nav_right={Right}
 ### Pre-configured Applications
 
 - **xplorer2**: Full file manager support with tree navigation, tabs, bookmarks
-- **Windows Explorer**: Basic file navigation
+- **Windows Explorer**: Enhanced file navigation with file operations, g-prefix shortcuts, and Windows 11 tab support
 - **Microsoft Excel**: Cell navigation and editing
 - **Microsoft Word**: Document navigation
 - **Microsoft Outlook 2023 (Classic)**: Gmail-style email navigation and actions
 - **Microsoft New Outlook (2024+)**: Gmail-style email navigation and actions
+- **Google Chrome**: Vimium-style browser navigation and tab management
+- **Microsoft Edge**: Vimium-style browser navigation and tab management
+- **Mozilla Firefox**: Vimium-style browser navigation and tab management
 - **Text Editors**: Generic config for Notepad, VS Code, etc.
 
 ### Outlook Key Bindings (Gmail-style)
@@ -165,6 +168,97 @@ Both Outlook 2023 (Classic) and New Outlook support the following Gmail-inspired
 
 > **Detection:** Outlook 2023 (Classic) is detected by its window class (`rctrl_renwnd32`).
 > New Outlook (2024+) is detected by its process name (`olk.exe`).
+
+### Windows Explorer Key Bindings
+
+| Key | Action |
+|-----|--------|
+| `h` | Go to parent folder (Backspace) |
+| `j` | Move down |
+| `k` | Move up |
+| `l` | Open file/folder (Enter) |
+| `H` (Shift+h) | Back in history |
+| `L` (Shift+l) | Forward in history |
+| `J` (Shift+j) | Page down |
+| `K` (Shift+k) | Page up |
+| `r` | Rename (F2) |
+| `d` | Delete to Recycle Bin |
+| `D` (Shift+d) | Permanently delete |
+| `y` | Copy file (Ctrl+C) |
+| `p` | Paste file (Ctrl+V) |
+| `m` | Cut/Move file (Ctrl+X) |
+| `e` | File properties (Alt+Enter) |
+| `o` | Focus address bar |
+| `/` | Search |
+| `n` | New folder (Ctrl+Shift+N) |
+| `Ctrl+r` | Refresh |
+| `gg` | Go to top of list |
+| `G` | Go to bottom of list |
+| `gh` | Go to user home folder |
+| `gu` | Go up one level (Alt+Up) |
+| `gd` | Go to Desktop |
+| `gt` | Next tab (Windows 11) |
+| `gT` | Previous tab (Windows 11) |
+
+### Browser Key Bindings (Chrome, Edge, Firefox)
+
+Vimium-inspired bindings for keyboard-driven browsing in Normal mode.
+> **Note:** Link-hint mode (`f` key in Vimium) requires a browser extension and cannot be replicated by AutoHotkey alone. Install [Vimium](https://vimium.github.io/) alongside this script for full link-hint support.
+
+> **Detection:** Chrome is detected by process name (`chrome.exe`), Edge by `msedge.exe`, and Firefox by window class (`MozillaWindowClass`).
+
+**Scrolling:**
+| Key | Action |
+|-----|--------|
+| `j` | Scroll down |
+| `k` | Scroll up |
+| `h` | Scroll left |
+| `l` | Scroll right |
+| `d` | Page down (Space) |
+| `u` | Page up (Shift+Space) |
+| `Ctrl+d` | Half-page down |
+| `Ctrl+u` | Half-page up |
+| `gg` | Scroll to top of page |
+| `G` | Scroll to bottom of page |
+
+**Navigation:**
+| Key | Action |
+|-----|--------|
+| `H` (Shift+h) | Go back in history |
+| `L` (Shift+l) | Go forward in history |
+| `r` | Reload page |
+| `R` (Shift+r) | Hard reload (bypass cache) |
+| `/` | Find in page |
+| `n` | Find next |
+| `N` (Shift+n) | Find previous |
+| `gi` | Focus first input field (Tab) |
+
+**Tabs:**
+| Key | Action |
+|-----|--------|
+| `t` | Open new tab |
+| `x` | Close current tab |
+| `X` (Shift+x) | Restore last closed tab |
+| `J` (Shift+j) | Next tab |
+| `K` (Shift+k) | Previous tab |
+| `gt` | Next tab |
+| `gT` | Previous tab |
+| `g0` | First tab |
+
+**URL / Clipboard:**
+| Key | Action |
+|-----|--------|
+| `o` | Focus address bar (open URL in current tab) |
+| `O` (Shift+o) | Open new tab |
+| `yy` | Copy current page URL to clipboard |
+
+**Zoom / View:**
+| Key | Action |
+|-----|--------|
+| `I` (Shift+i) | Zoom in |
+| `M` (Shift+m) | Zoom out |
+| `Shift+0` | Reset zoom (Ctrl+0) |
+| `U` (Shift+u) | View page source |
 
 ## Project Structure
 
