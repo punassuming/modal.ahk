@@ -354,10 +354,19 @@ Modal_IsAppActive(appName) {
     WinGetClass, winClass, A
     
     if (appConfig.WindowClass != "") {
-        return RegExMatch(winClass, appConfig.WindowClass)
+        if (!RegExMatch(winClass, appConfig.WindowClass)) {
+            return false
+        }
     }
     
-    return false
+    if (appConfig.WindowTitle != "") {
+        WinGetTitle, winTitle, A
+        if (!RegExMatch(winTitle, appConfig.WindowTitle)) {
+            return false
+        }
+    }
+    
+    return true
 }
 
 ; ============================================================================

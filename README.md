@@ -132,7 +132,39 @@ nav_right={Right}
 - **Windows Explorer**: Basic file navigation
 - **Microsoft Excel**: Cell navigation and editing
 - **Microsoft Word**: Document navigation
+- **Microsoft Outlook 2023 (Classic)**: Gmail-style email navigation and actions
+- **Microsoft New Outlook (2024+)**: Gmail-style email navigation and actions
 - **Text Editors**: Generic config for Notepad, VS Code, etc.
+
+### Outlook Key Bindings (Gmail-style)
+
+Both Outlook 2023 (Classic) and New Outlook support the following Gmail-inspired key bindings in Normal mode:
+
+| Key | Action |
+|-----|--------|
+| `j` | Next email (move down) |
+| `k` | Previous email (move up) |
+| `o` / `l` | Open email |
+| `h` | Back / close reading pane (Escape) |
+| `c` | Compose new email |
+| `r` | Reply |
+| `a` | Reply All |
+| `f` | Forward |
+| `e` | Archive |
+| `x` | Delete |
+| `u` | Mark as unread |
+| `s` | Flag / Star |
+| `/` | Search |
+| `n` | Next message in thread |
+| `p` | Previous message in thread |
+| `Ctrl+d` | Half page down (general Normal mode) |
+| `Ctrl+u` | Half page up (general Normal mode) |
+| `gg` | Go to top of list |
+| `G` | Go to bottom of list |
+| `gi` | Go to Inbox |
+
+> **Detection:** Outlook 2023 (Classic) is detected by its window class (`rctrl_renwnd32`).
+> New Outlook (2024+) is detected by its process name (`olk.exe`).
 
 ## Project Structure
 
