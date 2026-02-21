@@ -383,7 +383,7 @@ v::SendInput, {NumpadMult}
 ; Legacy xplorer2 mapping: Shift+Space triggers Select All (!a).
 +Space::SendInput, !a
 ; Legacy xplorer2 mapping: backtick opens bookmarks/go-to menu (!b).
-; If you need a literal backtick in xplorer2 command contexts, switch to Insert mode first.
+; If you need a literal backtick in xplorer2 command contexts, press CapsLock to leave normal mode first.
 `::SendInput, !b
 
 ; Ordering (o prefix)
@@ -517,13 +517,6 @@ u::SendInput, ^z
 ; ============================================================================
 
 #If Modal_IsNormalMode() && Modal_IsAppActive("Word")
-
-; Legacy Word compatibility: treat LWin as Ctrl while in modal normal mode.
-; Use CapsLock/Escape to leave normal mode and restore regular Win-key behavior.
-; While active, Win+D/Win+L and other Win-key system shortcuts are unavailable.
-; This also includes accessibility shortcuts such as Win+U and Win+Plus/Minus.
-LWin::SendInput, {Ctrl Down}
-LWin Up::SendInput, {Ctrl Up}
 
 ; Legacy Emacs-style cursor/edit bindings previously defined in applications/Word.ahk.
 ^a::SendInput, {Home}
