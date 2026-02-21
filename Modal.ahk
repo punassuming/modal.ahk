@@ -362,6 +362,7 @@ i::SendInput, ^q
 
 ; Edit file
 +e::SendInput, {F4}
+; Legacy xplorer2 mapping: Alt+f routed to hidden-files toggle menu.
 !f::SendInput, !h
 
 ; Bookmarks
@@ -370,6 +371,7 @@ m::SendInput, !ba
 
 ; Command console
 +s::SendInput, {F10}
+; Legacy xplorer2 mapping: Alt+t opens a new tab via Ctrl+Insert.
 !t::SendInput, ^{Insert}
 
 ; User menu
@@ -378,7 +380,9 @@ m::SendInput, !ba
 ; Selection
 +v::SendInput, !s
 v::SendInput, {NumpadMult}
+; Legacy xplorer2 mapping: Shift+Space triggers Select All (!a).
 +Space::SendInput, !a
+; Legacy xplorer2 mapping: backtick opens bookmarks/go-to menu (!b).
 `::SendInput, !b
 
 ; Ordering (o prefix)
@@ -515,6 +519,7 @@ u::SendInput, ^z
 
 ; Legacy Word compatibility: treat LWin as Ctrl while in modal normal mode.
 ; Use CapsLock/Escape to leave normal mode and restore regular Win-key behavior.
+; While active, Win+D/Win+L and other Win-key system shortcuts are unavailable.
 LWin::SendInput, {Ctrl Down}
 LWin Up::SendInput, {Ctrl Up}
 
