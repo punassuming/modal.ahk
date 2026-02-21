@@ -148,9 +148,9 @@ modal.ahk/
 ├── icons/
 │   ├── normal.ico         # Normal mode icon
 │   └── insert.ico         # Insert mode icon
-├── applications/          # Legacy app-specific scripts (reference only)
-├── Vimdow/               # Original vimdows navigation
-├── vim-nav/              # Original vim navigation
+├── applications/          # Optional app-specific helpers
+├── Kommand/              # Optional window management utility
+├── EmacsEverywhere.ahk   # Optional Emacs-style keybindings
 └── README.md
 ```
 
@@ -236,14 +236,8 @@ Modal_IsAppActive("AppName")  ; Check if app is active
 
 ## Legacy Scripts
 
-This project consolidates several original scripts:
-- `ranger.ahk` - xplorer2 file manager navigation
-- `vimdows_nav.ahk` - General vim navigation
-- `modalVim.ahk` - Modal vim implementation
-- `EmacsEverywhere.ahk` - Emacs keybindings
-- `Kommand/` - Window management utility
-
-These are preserved for reference but the new unified `Modal.ahk` is recommended.
+Legacy modal vim scripts have been consolidated into `Modal.ahk`.
+Optional companion utilities such as `EmacsEverywhere.ahk` and `Kommand/` remain available.
 
 ## Contributing
 
