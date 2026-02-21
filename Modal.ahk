@@ -337,6 +337,7 @@ h::SendInput, {Backspace}
 j::SendInput, {Down}
 k::SendInput, {Up}
 l::SendInput, {Enter}
+; Legacy compatibility: old xplorer2/ranger scripts also used Alt+h/j/k/l.
 !h::SendInput, {Backspace}
 !j::SendInput, {Down}
 !k::SendInput, {Up}
@@ -496,6 +497,7 @@ i::
 return
 
 d::SendInput, {Delete}
+; Legacy Excel mapping: select row, open context menu, choose Delete.
 +d::SendInput, +{Space}{AppsKey}d
 
 c::
@@ -513,9 +515,11 @@ u::SendInput, ^z
 
 #If Modal_IsNormalMode() && Modal_IsAppActive("Word")
 
+; Legacy Word compatibility: treat LWin as Ctrl while in modal normal mode.
 LWin::SendInput, {Ctrl Down}
 LWin Up::SendInput, {Ctrl Up}
 
+; Legacy Emacs-style cursor/edit bindings previously defined in applications/Word.ahk.
 ^a::SendInput, {Home}
 ^e::SendInput, {End}
 ^k::SendInput, +{End}{Del}
