@@ -362,7 +362,7 @@ i::SendInput, ^q
 
 ; Edit file
 +e::SendInput, {F4}
-; Legacy xplorer2 mapping: Alt+f routed to hidden-files toggle menu.
+; Legacy xplorer2 mapping: sends Alt+h (xplorer2 hidden-files/menu toggle path).
 !f::SendInput, !h
 
 ; Bookmarks
@@ -382,9 +382,8 @@ m::SendInput, !ba
 v::SendInput, {NumpadMult}
 ; Legacy xplorer2 mapping: Shift+Space triggers Select All (!a).
 +Space::SendInput, !a
-; Legacy xplorer2 mapping: backtick opens bookmarks/go-to menu (!b).
-; If you need a literal backtick in xplorer2 command contexts, press CapsLock to leave normal mode first.
-`::SendInput, !b
+; Legacy xplorer2 bookmarks/go-to moved to Alt+` to avoid blocking literal backtick input.
+!`::SendInput, !b
 
 ; Ordering (o prefix)
 o::
@@ -500,7 +499,7 @@ i::
 return
 
 d::SendInput, {Delete}
-; Legacy Excel mapping: select row, open context menu, choose Delete.
+; Legacy Excel mapping: select row, open context menu, choose Delete (locale/menu dependent).
 +d::SendInput, +{Space}{AppsKey}d
 
 c::
