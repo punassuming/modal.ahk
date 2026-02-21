@@ -356,7 +356,6 @@ l::SendInput, {Enter}
 
 ; Quick search
 /::SendInput, ^!+f
-^f::SendInput, ^f
 
 ; Preview file
 i::SendInput, ^q
@@ -372,7 +371,6 @@ m::SendInput, !ba
 ; Command console
 +s::SendInput, {F10}
 !t::SendInput, ^{Insert}
-^k::SendInput, ^k
 
 ; User menu
 :::SendInput, !uum
@@ -516,6 +514,7 @@ u::SendInput, ^z
 #If Modal_IsNormalMode() && Modal_IsAppActive("Word")
 
 ; Legacy Word compatibility: treat LWin as Ctrl while in modal normal mode.
+; Use CapsLock/Escape to leave normal mode and restore regular Win-key behavior.
 LWin::SendInput, {Ctrl Down}
 LWin Up::SendInput, {Ctrl Up}
 
