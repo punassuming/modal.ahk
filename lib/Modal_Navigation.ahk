@@ -409,7 +409,8 @@ Modal_SearchReplace() {
 ; ============================================================================
 
 Modal_Click() {
-    Click
+    count := Modal_GetRepeatCount()
+    Modal_ClickButton("Left", count)
     Modal_ClearRepeatCount()
 }
 

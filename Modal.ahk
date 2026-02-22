@@ -733,13 +733,10 @@ o::SendInput, ^l            ; Focus address bar (open URL in current tab)
 y::
     pending := Modal_GetPendingKey()
     if (pending = "y") {
-        SendInput, ^l
-        Sleep, 100  ; Wait for address bar focus before selecting text
-        SendInput, ^a
-        Sleep, 50   ; Wait for selection to complete before copying
-        SendInput, ^c
-        Sleep, 50   ; Wait for clipboard to be populated before dismissing
-        SendInput, {Escape}
+        Modal_SendAndWait("^l", 100)  ; Wait for address bar focus before selecting text
+        Modal_SendAndWait("^a", 50)   ; Wait for selection to complete before copying
+        Modal_SendAndWait("^c", 50)   ; Wait for clipboard to be populated before dismissing
+        Modal_SendKey("{Escape}")
         Modal_ClearRepeatCount()
     } else {
         Modal_SetPendingKey("y")
