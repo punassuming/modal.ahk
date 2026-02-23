@@ -408,6 +408,37 @@ Modal_SendKey(keys, count := 1) {
     }
 }
 
+Modal_SendSequence(sequence, count := 1, delimiter := "|") {
+    if (sequence = "") {
+        return
+    }
+    
+    Loop, Parse, sequence, %delimiter%
+    {
+        keys := Trim(A_LoopField)
+        if (keys != "") {
+            Modal_SendKey(keys, count)
+        }
+    }
+}
+
+Modal_SendAndWait(keys, waitMs := 50, count := 1) {
+    Modal_SendKey(keys, count)
+    if (waitMs > 0) {
+        Sleep, %waitMs%
+    }
+}
+
+Modal_ClickButton(button := "Left", count := 1) {
+    if (count < 1) {
+        return
+    }
+    
+    Loop, %count% {
+        Click, %button%
+    }
+}
+
 Modal_SendWithShift(keys, count := 1) {
     if (keys = "") {
         return
@@ -431,7 +462,11 @@ Modal_SendAction(action, useRepeatCount := true) {
         count := Modal_GetRepeatCount()
     }
     
-    Modal_SendKey(binding, count)
+    if (InStr(binding, "|")) {
+        Modal_SendSequence(binding, count)
+    } else {
+        Modal_SendKey(binding, count)
+    }
     Modal_ClearRepeatCount()
     
     return true
