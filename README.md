@@ -9,6 +9,8 @@ A comprehensive AutoHotkey v1.x solution that brings vim-like modal navigation t
 - **Vim-like Keybindings**: Standard hjkl navigation, word/line/page movements, and more
 - **Repeat Counts**: Use numbers before commands (e.g., `5j` moves down 5 lines)
 - **Visual Mode**: Select text using vim motions
+- **Per-Window Mode Memory**: Each window restores its last mode when refocused
+- **Master Enable Toggle**: Temporarily suspend all modal interception without exiting
 - **Easy Extensibility**: Add new applications by editing the configuration file
 
 ## Quick Start
@@ -16,6 +18,7 @@ A comprehensive AutoHotkey v1.x solution that brings vim-like modal navigation t
 1. Install [AutoHotkey v1.1](https://www.autohotkey.com/) (not v2.x)
 2. Double-click `Modal.ahk` to run
 3. Press **CapsLock** to toggle between Normal and Insert modes
+   - Optional: Press **Ctrl+Shift+CapsLock** to globally enable/disable modal interception
 4. In Normal mode, use vim keys for navigation:
    - `h`, `j`, `k`, `l` - Left, Down, Up, Right
    - `w`, `b` - Next word, Previous word

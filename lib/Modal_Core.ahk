@@ -16,13 +16,15 @@ global Modal_Config := {}
 global Modal_AppConfigs := {}
 global Modal_CurrentApp := ""
 global Modal_Enabled := true
+global Modal_WindowModes := {}
+global Modal_LastWindowId := ""
 
 ; ============================================================================
 ; INITIALIZATION
 ; ============================================================================
 
 Modal_Init() {
-    global Modal_Config, Modal_AppConfigs
+    global Modal_Config, Modal_AppConfigs, Modal_LastWindowId, Modal_WindowModes
     
     ; Set script options
     #Persistent
@@ -41,6 +43,14 @@ Modal_Init() {
     
     ; Set initial mode
     Modal_SetMode(Modal_Config.DefaultMode)
+    
+    ; Track and restore per-window mode state (vim-like behavior)
+    WinGet, activeWinId, ID, A
+    Modal_LastWindowId := activeWinId
+    if (activeWinId != "") {
+        Modal_WindowModes[activeWinId] := Modal_Config.DefaultMode
+    }
+    SetTimer, Modal_OnWindowChange, 150
     
     return true
 }
@@ -152,27 +162,41 @@ Modal_ReloadConfig() {
 ; MODE MANAGEMENT
 ; ============================================================================
 
-Modal_SetMode(mode) {
-    global Modal_Mode, Modal_PrevMode, Modal_Config, Modal_RepeatCount, Modal_PendingKey
+Modal_SetMode(mode, notify := true) {
+    global Modal_Mode, Modal_PrevMode, Modal_Config, Modal_RepeatCount, Modal_PendingKey, Modal_WindowModes
     
     Modal_PrevMode := Modal_Mode
     Modal_Mode := mode
     Modal_RepeatCount := ""
     Modal_PendingKey := ""
     
+    WinGet, activeWinId, ID, A
+    if (activeWinId != "") {
+        Modal_WindowModes[activeWinId] := mode
+    }
+    
     ; Update tray icon based on mode
     if (mode = "normal") {
         if (FileExist(Modal_Config.IconNormal)) {
             Menu, Tray, Icon, % Modal_Config.IconNormal
         }
-        Modal_Notify("Normal Mode")
+        Menu, Tray, Tip, Modal.ahk - Normal Mode
+        if (notify) {
+            Modal_Notify("Normal Mode")
+        }
     } else if (mode = "insert") {
         if (FileExist(Modal_Config.IconInsert)) {
             Menu, Tray, Icon, % Modal_Config.IconInsert
         }
-        Modal_Notify("Insert Mode")
+        Menu, Tray, Tip, Modal.ahk - Insert Mode
+        if (notify) {
+            Modal_Notify("Insert Mode")
+        }
     } else if (mode = "visual") {
-        Modal_Notify("Visual Mode")
+        Menu, Tray, Tip, Modal.ahk - Visual Mode
+        if (notify) {
+            Modal_Notify("Visual Mode")
+        }
     }
     
     return mode
@@ -200,20 +224,71 @@ Modal_EnterVisualMode() {
     Modal_SetMode("visual")
 }
 
+Modal_SetEnabled(enabled := true) {
+    global Modal_Enabled, Modal_Mode
+    Modal_Enabled := !!enabled
+    
+    if (Modal_Enabled) {
+        Modal_SetMode(Modal_Mode, false)
+        Modal_Notify("Modal Enabled")
+    } else {
+        Modal_ClearRepeatCount()
+        Menu, Tray, Tip, Modal.ahk - Disabled
+        Modal_Notify("Modal Disabled")
+    }
+}
+
+Modal_ToggleEnabled() {
+    global Modal_Enabled
+    Modal_SetEnabled(!Modal_Enabled)
+}
+
+Modal_IsEnabled() {
+    global Modal_Enabled
+    return Modal_Enabled
+}
+
 Modal_IsNormalMode() {
-    global Modal_Mode
-    return (Modal_Mode = "normal")
+    global Modal_Mode, Modal_Enabled
+    return (Modal_Enabled && Modal_Mode = "normal")
 }
 
 Modal_IsInsertMode() {
-    global Modal_Mode
-    return (Modal_Mode = "insert")
+    global Modal_Mode, Modal_Enabled
+    return (Modal_Enabled && Modal_Mode = "insert")
 }
 
 Modal_IsVisualMode() {
-    global Modal_Mode
-    return (Modal_Mode = "visual")
+    global Modal_Mode, Modal_Enabled
+    return (Modal_Enabled && Modal_Mode = "visual")
 }
+
+Modal_OnWindowChange:
+    global Modal_Enabled, Modal_LastWindowId, Modal_WindowModes, Modal_Mode
+    if (!Modal_Enabled) {
+        return
+    }
+    
+    WinGet, activeWinId, ID, A
+    if (activeWinId = "") {
+        return
+    }
+    
+    if (activeWinId = Modal_LastWindowId) {
+        return
+    }
+    
+    Modal_LastWindowId := activeWinId
+    
+    if (Modal_WindowModes.HasKey(activeWinId)) {
+        targetMode := Modal_WindowModes[activeWinId]
+        if (targetMode != Modal_Mode) {
+            Modal_SetMode(targetMode, false)
+        }
+    } else {
+        Modal_WindowModes[activeWinId] := Modal_Mode
+    }
+return
 
 ; ============================================================================
 ; REPEAT COUNT HANDLING

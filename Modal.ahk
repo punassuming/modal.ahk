@@ -51,6 +51,7 @@ if (FileExist("icons\normal.ico")) {
 Menu, Tray, NoStandard
 Menu, Tray, Add, Normal Mode, TrayNormalMode
 Menu, Tray, Add, Insert Mode, TrayInsertMode
+Menu, Tray, Add, Toggle Modal Enablement, TrayToggleEnabled
 Menu, Tray, Add
 Menu, Tray, Add, Reload Config, TrayReloadConfig
 Menu, Tray, Add, Reload Script, TrayReloadScript
@@ -72,6 +73,10 @@ return
 
 TrayInsertMode:
     Modal_EnterInsertMode()
+return
+
+TrayToggleEnabled:
+    Modal_ToggleEnabled()
 return
 
 TrayReloadConfig:
@@ -107,6 +112,11 @@ return
 ; Ctrl+CapsLock sends actual CapsLock
 ^CapsLock::
     SetCapsLockState, % GetKeyState("CapsLock", "T") ? "Off" : "On"
+return
+
+; Ctrl+Shift+CapsLock toggles modal interception on/off
+^+CapsLock::
+    Modal_ToggleEnabled()
 return
 
 ; ============================================================================
