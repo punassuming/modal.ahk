@@ -18,13 +18,14 @@ global Modal_CurrentApp := ""
 global Modal_Enabled := true
 global Modal_WindowModes := {}
 global Modal_LastWindowId := ""
+global Modal_WindowPollMs := 150
 
 ; ============================================================================
 ; INITIALIZATION
 ; ============================================================================
 
 Modal_Init() {
-    global Modal_Config, Modal_AppConfigs, Modal_LastWindowId, Modal_WindowModes
+    global Modal_Config, Modal_AppConfigs, Modal_LastWindowId, Modal_WindowModes, Modal_WindowPollMs
     
     ; Set script options
     #Persistent
@@ -50,7 +51,7 @@ Modal_Init() {
     if (activeWinId != "") {
         Modal_WindowModes[activeWinId] := Modal_Config.DefaultMode
     }
-    SetTimer, Modal_OnWindowChange, 150
+    SetTimer, Modal_CheckWindowChangeTimer, %Modal_WindowPollMs%
     
     return true
 }
@@ -225,13 +226,15 @@ Modal_EnterVisualMode() {
 }
 
 Modal_SetEnabled(enabled := true) {
-    global Modal_Enabled, Modal_Mode
-    Modal_Enabled := !!enabled
+    global Modal_Enabled, Modal_Mode, Modal_WindowPollMs
+    Modal_Enabled := enabled ? true : false
     
     if (Modal_Enabled) {
+        SetTimer, Modal_CheckWindowChangeTimer, %Modal_WindowPollMs%
         Modal_SetMode(Modal_Mode, false)
         Modal_Notify("Modal Enabled")
     } else {
+        SetTimer, Modal_CheckWindowChangeTimer, Off
         Modal_ClearRepeatCount()
         Menu, Tray, Tip, Modal.ahk - Disabled
         Modal_Notify("Modal Disabled")
@@ -263,8 +266,8 @@ Modal_IsVisualMode() {
     return (Modal_Enabled && Modal_Mode = "visual")
 }
 
-Modal_OnWindowChange:
-    global Modal_Enabled, Modal_LastWindowId, Modal_WindowModes, Modal_Mode
+Modal_CheckWindowChangeTimer:
+    global Modal_Enabled, Modal_LastWindowId, Modal_WindowModes, Modal_Mode, Modal_Config
     if (!Modal_Enabled) {
         return
     }
@@ -286,7 +289,11 @@ Modal_OnWindowChange:
             Modal_SetMode(targetMode, false)
         }
     } else {
-        Modal_WindowModes[activeWinId] := Modal_Mode
+        defaultMode := Modal_Config.DefaultMode
+        Modal_WindowModes[activeWinId] := defaultMode
+        if (defaultMode != Modal_Mode) {
+            Modal_SetMode(defaultMode, false)
+        }
     }
 return
 
